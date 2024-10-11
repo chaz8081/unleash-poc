@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/Unleash/unleash-client-go/v4"
+	uContext "github.com/Unleash/unleash-client-go/v4/context"
+	"github.com/google/uuid"
 )
 
 var unleashClient *unleash.Client
@@ -38,17 +41,43 @@ func init() {
 func main() {
 	defer unleashClient.Close()
 
-	log.Printf("features: %+v", unleashClient.ListFeatures())
-
 	router := http.NewServeMux()
 
 	// API endpoint handler
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Check if the feature flag is enabled
 		if unleashClient.IsEnabled("new-feature") {
-			fmt.Fprint(w, "new-feature is enabled!")
+			fmt.Fprintln(w, "new-feature is enabled!")
 		} else {
-			fmt.Fprint(w, "new-feature is disabled.")
+			fmt.Fprintln(w, "new-feature is disabled.")
+		}
+	})
+
+	router.HandleFunc("/buyer/{id}", func(w http.ResponseWriter, r *http.Request) {
+		idStr := r.PathValue("id")
+
+		// Parse UUID
+		id, err := uuid.Parse(idStr)
+		if err != nil {
+			http.Error(w, "Invalid buyer ID", http.StatusBadRequest)
+			return
+		}
+
+		// Create a context with the buyer ID
+		uCtx := uContext.Context{
+			Properties: map[string]string{
+				"buyerID": id.String(),
+			},
+		}
+
+		buyer := unleashClient.GetVariant("buyerFF", unleash.WithVariantContext(uCtx))
+		b, _ := json.MarshalIndent(buyer, "", "  ")
+		fmt.Fprintln(w, string(b))
+
+		if buyer.FeatureEnabled {
+			fmt.Fprintln(w, "buyer is enabled!")
+		} else {
+			fmt.Fprintln(w, "buyer is disabled")
 		}
 	})
 

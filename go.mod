@@ -3,8 +3,12 @@ module github.com/chaz8081/unleash-poc
 go 1.22.4
 
 require (
+	github.com/Unleash/unleash-client-go/v4 v4.1.3
+	github.com/google/uuid v1.6.0
+)
+
+require (
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
-	github.com/Unleash/unleash-client-go/v4 v4.1.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.1.1 // indirect
