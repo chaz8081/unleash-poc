@@ -81,6 +81,30 @@ func main() {
 		}
 	})
 
+	router.HandleFunc("/buyer/{buyerID}/merchant/{merchantID}/aprs", func(w http.ResponseWriter, r *http.Request) {
+		buyerID := r.PathValue("buyerID")
+		merchantID := r.PathValue("merchantID")
+
+		// Create a context with the buyer ID
+		uCtx := uContext.Context{
+			Properties: map[string]string{
+				"buyerID":    buyerID,
+				"merchantID": merchantID,
+			},
+		}
+
+		buyer := unleashClient.GetVariant("test-json-for-id", unleash.WithVariantContext(uCtx))
+		b, _ := json.MarshalIndent(buyer, "", "  ")
+		fmt.Fprintln(w, string(b))
+		fmt.Fprintln(w, buyer.Payload.Value)
+
+		if buyer.FeatureEnabled {
+			fmt.Fprintln(w, "buyer is enabled!")
+		} else {
+			fmt.Fprintln(w, "buyer is disabled")
+		}
+	})
+
 	// Start the API server
 	log.Println("API server listening on :8080")
 	http.ListenAndServe(":8080", router)

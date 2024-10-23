@@ -22,6 +22,8 @@ services:
       INIT_ADMIN_API_TOKENS: "*:*.unleash-insecure-admin-token"
       UNLEASH_DEFAULT_ADMIN_USERNAME: "user"
       UNLEASH_DEFAULT_ADMIN_PASSWORD: "pass"
+      SEND_TELEMETRY: false
+      CHECK_VERSION: false
     depends_on:
       db:
         condition: service_healthy
