@@ -9,7 +9,6 @@ import (
 
 	"github.com/Unleash/unleash-client-go/v4"
 	uContext "github.com/Unleash/unleash-client-go/v4/context"
-	"github.com/google/uuid"
 )
 
 var unleashClient *unleash.Client
@@ -43,45 +42,7 @@ func main() {
 
 	router := http.NewServeMux()
 
-	// API endpoint handler
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Check if the feature flag is enabled
-		if unleashClient.IsEnabled("new-feature") {
-			fmt.Fprintln(w, "new-feature is enabled!")
-		} else {
-			fmt.Fprintln(w, "new-feature is disabled.")
-		}
-	})
-
-	router.HandleFunc("/buyer/{id}", func(w http.ResponseWriter, r *http.Request) {
-		idStr := r.PathValue("id")
-
-		// Parse UUID
-		id, err := uuid.Parse(idStr)
-		if err != nil {
-			http.Error(w, "Invalid buyer ID", http.StatusBadRequest)
-			return
-		}
-
-		// Create a context with the buyer ID
-		uCtx := uContext.Context{
-			Properties: map[string]string{
-				"buyerID": id.String(),
-			},
-		}
-
-		buyer := unleashClient.GetVariant("buyerFF", unleash.WithVariantContext(uCtx))
-		b, _ := json.MarshalIndent(buyer, "", "  ")
-		fmt.Fprintln(w, string(b))
-
-		if buyer.FeatureEnabled {
-			fmt.Fprintln(w, "buyer is enabled!")
-		} else {
-			fmt.Fprintln(w, "buyer is disabled")
-		}
-	})
-
-	router.HandleFunc("/buyer/{buyerID}/merchant/{merchantID}/aprs", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/buyer/{buyerID}/merchant/{merchantID}", func(w http.ResponseWriter, r *http.Request) {
 		buyerID := r.PathValue("buyerID")
 		merchantID := r.PathValue("merchantID")
 
@@ -93,15 +54,15 @@ func main() {
 			},
 		}
 
-		buyer := unleashClient.GetVariant("test-json-for-id", unleash.WithVariantContext(uCtx))
-		b, _ := json.MarshalIndent(buyer, "", "  ")
+		demoFeatureFlag := unleashClient.GetVariant("demo-ff", unleash.WithVariantContext(uCtx))
+		b, _ := json.MarshalIndent(demoFeatureFlag, "", "  ")
 		fmt.Fprintln(w, string(b))
-		fmt.Fprintln(w, buyer.Payload.Value)
+		fmt.Fprintln(w, demoFeatureFlag.Payload.Value)
 
-		if buyer.FeatureEnabled {
-			fmt.Fprintln(w, "buyer is enabled!")
+		if demoFeatureFlag.FeatureEnabled {
+			fmt.Fprintln(w, "demoFeatureFlag is enabled!")
 		} else {
-			fmt.Fprintln(w, "buyer is disabled")
+			fmt.Fprintln(w, "demoFeatureFlag is disabled")
 		}
 	})
 

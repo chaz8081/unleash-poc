@@ -1,7 +1,7 @@
 version: "3.0"
 
 env:
-  INSERT_API_KEY: "user:a090fbd3a3d1506e97a72632a161c91786cfa4772aa138ed2985dca0"
+  INSERT_API_KEY: "*:*.unleash-insecure-admin-token"
 
 tasks:
   setup:

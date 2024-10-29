@@ -1,0 +1,10 @@
+docker_compose('docker-compose.yml')
+docker_build('unleash-poc_web', '.',
+  dockerfile='api/Dockerfile',
+    only=[
+        './api',
+    ],
+    live_update=[
+        sync('./api', '/app'),
+    ]
+)
