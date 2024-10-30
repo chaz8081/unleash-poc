@@ -1,3 +1,19 @@
+### Unleash Demo
+
+To run:
+
+```sh
+tilt up
+```
+
+Use <ctrl+c> to stop.
+
+To cleanup:
+
+```sh
+tilt down
+```
+
 ### Notes
 
 - Unleash Docs: https://docs.getunleash.io
