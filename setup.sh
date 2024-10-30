@@ -169,3 +169,13 @@ curl --location --request POST 'http://localhost:4242/api/admin/projects/default
         ],
         "disabled": false
         }'
+
+##################################################################=
+# set up team flag
+curl --location --request POST 'http://localhost:4242/api/admin/tag-types' \
+    --header "Authorization: $INSERT_API_KEY" \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "team",
+        "description": "Team to contact for feature flag."
+}'
