@@ -1,5 +1,10 @@
 ### Notes
 
-TODOs:
+- Unleash Docs: https://docs.getunleash.io
+- Unleash Repo: https://github.com/Unleash/unleash
 
-- use terraform to provision user(s)
+### Deps
+
+- Docker
+- Taskfile
+- Tilt
