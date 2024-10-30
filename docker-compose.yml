@@ -69,7 +69,7 @@ services:
       UNLEASH_URL: http://unleash:4242/api
       UNLEASH_APP_NAME: my-go-api
       UNLEASH_INSTANCE_ID: test-instance-id # Optional
-      # to demo prod, create api token and replace below
+      # to demo prod calls, create api token and replace below
       INIT_CLIENT_API_TOKENS: "default:development.unleash-insecure-api-token"
     depends_on:
       unleash:
