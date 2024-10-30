@@ -42,7 +42,11 @@ func main() {
 
 	router := http.NewServeMux()
 
-	router.HandleFunc("/buyer/{buyerID}/merchant/{merchantID}", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Hello, World!")
+	})
+
+	router.HandleFunc("/merchant/{merchantID}/buyer/{buyerID}", func(w http.ResponseWriter, r *http.Request) {
 		buyerID := r.PathValue("buyerID")
 		merchantID := r.PathValue("merchantID")
 
@@ -56,14 +60,14 @@ func main() {
 
 		demoFeatureFlag := unleashClient.GetVariant("demo-ff", unleash.WithVariantContext(uCtx))
 		b, _ := json.MarshalIndent(demoFeatureFlag, "", "  ")
-		fmt.Fprintln(w, string(b))
-		fmt.Fprintln(w, demoFeatureFlag.Payload.Value)
 
-		if demoFeatureFlag.FeatureEnabled {
-			fmt.Fprintln(w, "demoFeatureFlag is enabled!")
-		} else {
-			fmt.Fprintln(w, "demoFeatureFlag is disabled")
-		}
+		fmt.Fprint(w, "\n\n\ndemoFeatureFlag start\n\n\n")
+		fmt.Fprint(w, string(b))
+		fmt.Fprint(w, "\n\n\ndemoFeatureFlag end\n\n\n")
+
+		fmt.Fprint(w, "\n\n\ndemoFeatureFlag value start\n\n\n")
+		fmt.Fprint(w, demoFeatureFlag.Payload.Value)
+		fmt.Fprint(w, "\n\n\ndemoFeatureFlag value end\n\n\n")
 	})
 
 	// Start the API server

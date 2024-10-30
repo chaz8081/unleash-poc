@@ -1,9 +1,10 @@
 version: "3.0"
 
 env:
-  INSERT_API_KEY: "*:*.unleash-insecure-admin-token"
+  ADMIN_API_KEY: "*:*.unleash-insecure-admin-token"
 
 tasks:
   setup:
-    cmds:
-      - ./setup.sh
+    cmd: |
+      if ! command -v tilt &> /dev/null; then curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash; fi
+      ./setup.sh

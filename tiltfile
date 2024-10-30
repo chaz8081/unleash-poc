@@ -1,10 +1,7 @@
 docker_compose('docker-compose.yml')
-docker_build('unleash-poc_web', '.',
-  dockerfile='api/Dockerfile',
-    only=[
-        './api',
-    ],
-    live_update=[
-        sync('./api', '/app'),
-    ]
+
+local_resource(
+    name='run_my_script',
+    cmd='task setup',
+    resource_deps=["unleash"]  # Replace with the actual image name
 )

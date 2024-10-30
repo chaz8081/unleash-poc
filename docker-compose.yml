@@ -60,8 +60,7 @@ services:
 
   web:
     build:
-      context: api
-      dockerfile: api/Dockerfile
+      context: .
     ports:
       - "8080:8080"
     environment:
@@ -69,6 +68,7 @@ services:
       UNLEASH_APP_NAME: my-go-api
       UNLEASH_INSTANCE_ID: test-instance-id # Optional
       INIT_CLIENT_API_TOKENS: "default:development.unleash-insecure-api-token"
+      # INIT_CLIENT_API_TOKENS: "*:production.8c22e1cbf1c7302207e09e38cca715ac47e352e68e66137c7eba3195"
     depends_on:
       unleash:
         condition: service_healthy
